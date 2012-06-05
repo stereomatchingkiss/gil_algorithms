@@ -8,6 +8,8 @@
 #include <boost/gil/algorithm.hpp>
 #include <boost/gil/typedefs.hpp>
 
+#include <boost/gil/extension/numeric/pixel_numeric_operations.hpp>
+
 #include <boost/gil/extension/dynamic_image/any_image_view.hpp>
 #include <boost/gil/extension/dynamic_image/apply_operation.hpp>
 
@@ -39,6 +41,8 @@ void absdiff(SrcView1 const &src1, SrcView2 const &src2, DstView const &dst)
             auto src2_it = scale_src2.row_begin(y);
             auto dst_it = dst.row_begin(y);
 
+            //for (int x = 0; x != src1.width(); ++x)
+              //  boost::gil::static_transform(src1_it[x], src2_it[x], dst_it[x], abs_func());
             for (int x = 0; x != src1.width(); ++x)
                 boost::gil::static_transform(src1_it[x], src2_it[x], dst_it[x], abs_func());
         }
