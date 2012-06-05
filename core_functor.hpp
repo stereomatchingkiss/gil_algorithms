@@ -26,7 +26,7 @@ struct absdiff_func : public std::unary_function<DstView, void>
 /*
  * calculate the adbsolute different(pixels) of in1 and in2
  */
-struct abs_func
+struct absdiff_func
 {      
     template <typename T>
     T operator()(T in1, T in2) const {
