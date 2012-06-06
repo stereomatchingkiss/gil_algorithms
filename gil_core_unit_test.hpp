@@ -66,9 +66,9 @@ inline void test_gil_absdiff()
 {
     namespace ph = std::placeholders;
     typedef boost::gil::gray8_image_t image;
-    typedef boost::gil::gray8_view_t type;
-    typedef boost::gil::gray8c_view_t type_c;
-    gil_core_tri_func<image>(std::bind(absdiff<type_c, type_c, type>, ph::_1, ph::_2, ph::_3),
+    typedef image::view_t view;
+    typedef image::const_view_t view_c;
+    gil_core_tri_func<image>(std::bind(absdiff<view_c, view_c, view>, ph::_1, ph::_2, ph::_3),
                              "test absdiff()");
 }
 
@@ -79,9 +79,9 @@ inline void test_gil_add()
 {
     namespace ph = std::placeholders;
     typedef boost::gil::gray8_image_t image;
-    typedef boost::gil::gray8_view_t  type;
-    typedef boost::gil::gray8c_view_t type_c;
-    gil_core_tri_func<image>(std::bind(add<type_c, type_c, type>, ph::_1, ph::_2, ph::_3),
+    typedef image::view_t view;
+    typedef image::const_view_t view_c;
+    gil_core_tri_func<image>(std::bind(add<view_c, view_c, view>, ph::_1, ph::_2, ph::_3),
                              "test add()");
 }
 
