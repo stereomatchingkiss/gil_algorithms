@@ -1,20 +1,21 @@
 #ifndef CORE_FUNCTOR_HPP
 #define CORE_FUNCTOR_HPP
 
-#include <iostream>
 #include <functional>
 #include <typeinfo>
 
 #include "core.hpp"
+#include "param_type.hpp"
 
 /*
  * functor design for the dynamic version of absdiff
  */
 template <typename DstView>
-struct absdiff_func : public std::unary_function<DstView, void>
+struct absdiff_func_dy : public std::unary_function<DstView, void>
 {    
   typedef void result_type;
-  absdiff_func(DstView const &dst) : dst_(dst) {}
+
+  absdiff_func_dy(DstView const &dst) : dst_(dst) {}
 
   template <typename SrcView1, typename SrcView2>
   result_type operator()(SrcView1 const &src1, SrcView2 const &src2) const { absdiff(src1, src2, dst_); }
@@ -24,7 +25,8 @@ struct absdiff_func : public std::unary_function<DstView, void>
 };
 
 /*
- * calculate the adbsolute different(pixels) of in1 and in2
+ * calculate the adbsolute different(pixels) of in1 and in2,
+ * this functor is design for the static version of absdiff
  */
 struct absdiff_func
 {      
