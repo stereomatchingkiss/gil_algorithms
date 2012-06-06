@@ -41,10 +41,8 @@ void absdiff(SrcView1 const &src1, SrcView2 const &src2, DstView const &dst)
             auto src2_it = scale_src2.row_begin(y);
             auto dst_it = dst.row_begin(y);
 
-            //for (int x = 0; x != src1.width(); ++x)
-              //  boost::gil::static_transform(src1_it[x], src2_it[x], dst_it[x], abs_func());
             for (int x = 0; x != src1.width(); ++x)
-                boost::gil::static_transform(src1_it[x], src2_it[x], dst_it[x], abs_func());
+                boost::gil::static_transform(src1_it[x], src2_it[x], dst_it[x], absdiff_func());
         }
     }
 }
@@ -55,7 +53,7 @@ void absdiff(SrcView1 const &src1, SrcView2 const &src2, DstView const &dst)
 template<typename SrcView, typename DstView>
 inline void absdiff(boost::gil::any_image_view<SrcView> const &src1, boost::gil::any_image_view<SrcView> const &src2, DstView const &dst)
 {
-    apply_operation(src1, src2, absdiff_func<DstView>(dst) );
+    apply_operation(src1, src2, absdiff_func_dy<DstView>(dst) );
 }
 
 /* designed for pixel type of gil
