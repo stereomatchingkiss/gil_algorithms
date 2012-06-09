@@ -47,18 +47,39 @@ class saturation_add : public std::binary_function<double, double, T>
    public :
     saturation_add(double min, double max) : min_(min), max_(max) {}
 
-    T operator()(T in1, T in2) const {
-
-        double temp = (double)(in1 + in2);
-        if(temp > max_) temp = max_;
-        else if(temp < min_) temp = min_;
-
-        return (T)temp;
-    }
+    T operator()(T in1, T in2) const;
 
   private :
     double min_; //minimum value
     double max_; //maximum value
 };
+
+template<typename T>
+T saturation_add<T>::operator()(T in1, T in2) const {
+
+    double temp = (double)(in1 + in2);
+    if(temp > max_) temp = max_;
+    else if(temp < min_) temp = min_;
+
+    return (T)temp;
+}
+
+/*
+ * functor design for the dynamic version of add
+ */
+template <typename DstView>
+struct saturation_add_dy : public std::unary_function<DstView, void>
+{
+  typedef void result_type;
+
+  saturation_add_dy(DstView const &dst) : dst_(dst) {}
+
+  template <typename SrcView1, typename SrcView2>
+  result_type operator()(SrcView1 const &src1, SrcView2 const &src2) const { add(src1, src2, dst_); }
+
+  private :
+    DstView const &dst_;
+};
+
 
 #endif // CORE_FUNCTOR_HPP
