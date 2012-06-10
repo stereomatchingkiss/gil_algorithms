@@ -8,48 +8,29 @@
 #include <boost/gil/typedefs.hpp>
 
 #include "core.hpp"
+#include "gil_show_view.hpp"
 
 /*
- * Show the value of the view
- *
- * @param :
- *  view : the view you want to show
- */
-template<typename T>
-void show_view(T const &view)
-{
-    for(int i = 0; i != view.height(); ++i)
-    {
-        auto src_it = view.row_begin(i);
-        for(int j = 0; j != view.width(); ++j)
-        {           
-            for(int c = 0; c != boost::gil::num_channels<T>::value; ++c)
-            std::cout<<"channel "<< c << " : ("<<i<<", "<<j<<") = "<<(int)src_it[j][c]<<", ";
-        }
-        std::cout<<std::endl;
-    }
-    std::cout<<std::endl;
-}
-
-/*
- * test the algorithms in core.hpp with 3 view
+ * test the algorithms in core.hpp with 3 views
  *
  * @param :
  * tri_func : functor with 3 arguments which accept three images
  * message  : the message you want to show when the function start
+ * value_one : the value fill into the first view
+ * value_two : the value fill into the second view
  */
 template<typename Image, typename Func>
-void gil_core_tri_func(Func tri_func, char const *message)
+void gil_core_tri_func(Func tri_func, char const *message, double value_one = 8.0, double value_two = 4.0)
 {
     std::cout<<message<<std::endl;
 
     using namespace boost::gil;
 
     Image src1(2, 2);
-    fill_pixels(view(src1), 8);
+    fill_pixels(view(src1), value_one);
 
     Image src2(2, 2);
-    fill_pixels(view(src2), 4);
+    fill_pixels(view(src2), value_two);
 
     Image src3(2, 2);
 
@@ -61,27 +42,29 @@ void gil_core_tri_func(Func tri_func, char const *message)
 
 /*
  * test the function [adsdiff] of "core.hpp"
+ * dst_view = first_view - second_view
  */
+template<typename Image>
 inline void test_gil_absdiff()
 {
     namespace ph = std::placeholders;
-    typedef boost::gil::gray8_image_t image;
-    typedef image::view_t view;
-    typedef image::const_view_t view_c;
-    gil_core_tri_func<image>(std::bind(absdiff<view_c, view_c, view>, ph::_1, ph::_2, ph::_3),
+    typedef typename Image::view_t view;
+    typedef typename Image::const_view_t view_c;
+    gil_core_tri_func<Image>(std::bind(absdiff<view_c, view_c, view>, ph::_1, ph::_2, ph::_3),
                              "test absdiff()");
 }
 
 /*
  * test the function [add] of "core.hpp"
+ * dst_view = first_view + second_view
  */
+template<typename Image>
 inline void test_gil_add()
 {
     namespace ph = std::placeholders;
-    typedef boost::gil::gray8_image_t image;
-    typedef image::view_t view;
-    typedef image::const_view_t view_c;
-    gil_core_tri_func<image>(std::bind(add<view_c, view_c, view>, ph::_1, ph::_2, ph::_3),
+    typedef typename Image::view_t view;
+    typedef typename Image::const_view_t view_c;
+    gil_core_tri_func<Image>(std::bind(add<view_c, view_c, view>, ph::_1, ph::_2, ph::_3),
                              "test add()");
 }
 
