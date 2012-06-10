@@ -52,8 +52,8 @@ void absdiff(SrcView1 const &src1, SrcView2 const &src2, DstView const &dst)
  */
 template<typename SrcView, typename DstView>
 inline void absdiff(boost::gil::any_image_view<SrcView> const &src1, boost::gil::any_image_view<SrcView> const &src2, DstView const &dst)
-{
-    apply_operation(src1, src2, absdiff_func_dy<DstView>(dst) );
+{    
+    boost::gil::apply_operation(src1, src2, absdiff_func_dy<DstView>(dst) );
 }
 
 /* designed for pixel type of gil
@@ -146,6 +146,15 @@ void add(SrcView1 const &src1, SrcView2 const &src2, DstView const &dst)
             boost::gil::static_transform(src1_it[j], src2_it[j], dst_it[j],
                                          saturation_add<value_type>(type::min_value(), type::max_value()));
     }
+}
+
+/*
+ * dynamic version of add
+ */
+template<typename SrcView, typename DstView>
+inline void add(boost::gil::any_image_view<SrcView> const &src1, boost::gil::any_image_view<SrcView> const &src2, DstView const &dst)
+{
+    boost::gil::apply_operation(src1, src2, saturation_add_dy<DstView>(dst) );
 }
 
 #endif // GIL_CORE_HPP
