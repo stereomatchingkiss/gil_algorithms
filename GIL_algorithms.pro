@@ -24,4 +24,6 @@ HEADERS  += \
     core.hpp \
     gil_core_unit_test.hpp \
     param_type.hpp \
-    gil_show_view.hpp
+    gil_show_view.hpp \
+    resample.hpp \
+    gil_resample_unit_test.hpp
